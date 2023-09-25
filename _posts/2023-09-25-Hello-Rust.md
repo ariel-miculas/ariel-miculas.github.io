@@ -59,7 +59,7 @@ fn merge_chunks(
     Ok(())
 }
 ```
-And the errors:
+Borrow checker complaints:
 ```
 
 error[E0499]: cannot borrow `*prev_files` as mutable more than once at a time
@@ -104,15 +104,30 @@ error: could not compile `builder` due to 2 previous errors; 1 warning emitted
 
 Reading stackoverlow answers wasn't much help because I had no idea about the
 concepts they were mentioning. So I had to do something that every programmer
-fears: read the [documentation](https://doc.rust-lang.org/book/).
+fears: read [the documentation](https://doc.rust-lang.org/book/).
 
 The Rust book was quite a nice read, it took me a while to finish it but
 afterwards I've finally understood why my first attempt at solving the issue
 didn't work: once I had a mutable reference to any element in the vector, the
-borrow checker prevented me from using the vector in any way until I was done
-using the mutable reference. I've solved the issue by [removing the first
-element from the
+borrow checker prevented me from [having any other
+references](https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html#mutable-references)
+to the vector until I was done using the mutable reference.
+
+These rules prevent us from ending up with memory issues such as **dangling
+pointers** or **use-after-free**. Imagine if we could take a reference to the
+first element, push a new element to the vector which causes the vector be
+reallocated at another memory address, and finally use the reference to the
+first element. We would end up with a
+[use-after-free](https://stanford-cs242.github.io/f18/lectures/05-1-rust-memory-safety.html#use-after-free)
+vulnerability. Or, in my case, get a reference to the first element of the
+vector, then remove the first element from the vector which could happen to be
+the last element and in this case the reference to the first element becomes a
+[dangling
+pointer](https://stanford-cs242.github.io/f18/lectures/05-1-rust-memory-safety.html#dangling-pointers).
+Rust guarantees memory safety and thus prevents us from doing such mistakes.
+
+I've finally solved the issue by [removing the first element from the
 vector](https://github.com/project-machine/puzzlefs/pull/33/files#diff-56433df5bc6639997363face15c8e9e58ff3ca3cf5956ba84dc350fdce074588R90),
 processing it and then [inserting it back into the
 vector](https://github.com/project-machine/puzzlefs/pull/33/files#diff-56433df5bc6639997363face15c8e9e58ff3ca3cf5956ba84dc350fdce074588R140)
-if further processing needed to be done.
+in cases where further processing needed to be done.

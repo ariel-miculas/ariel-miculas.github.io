@@ -136,3 +136,33 @@ six years prior to this).
 My first contribution to the kernel was a really frustrating and discouraging
 experience, dealing with people who do not think it's important to get proper
 recognition for your work.
+
+### Update
+[A user on Hacker News](https://news.ycombinator.com/item?id=37672280) pointed
+out to [this
+email](https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-June/244387.html)
+in which Michael Ellerman says:
+> Thanks for your patch, but I wanted to fix it differently. Can you try the
+> patch below and make sure it fixes the bug for you?
+
+which highlights that the maintainer didn't review my patch, but instead he
+went with his own implementation which he asked me to test.
+
+I also found the original patch I sent to the security mailing list and
+[forwarded the email
+thread](https://www.mail-archive.com/linuxppc-dev@lists.ozlabs.org/msg221962.html)
+to linuxppc-dev.
+
+[Michael Ellerman
+responded](https://www.mail-archive.com/linuxppc-dev@lists.ozlabs.org/msg221990.html):
+> Hi Ariel,
+> 
+> I'm sorry about the way I handled your patch. I should have spent more time 
+> working with you to develop your patch.
+> 
+> I agree that the Reported-by tag doesn't properly reflect the contribution you 
+> made, I should have realised that at the time.
+> 
+> cheers
+> 
+> (Apologies for the brief reply, I'm on vacation and replying from my phone)
